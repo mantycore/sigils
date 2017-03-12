@@ -27,6 +27,7 @@ var shapes = [
 		ctx.rect(BASE_X + left_x, BASE_Y + top_y, width, bottom_y - top_y);
 		ctx.fillStyle = color;
 		ctx.fill()
+		ctx.closePath();
 	},
 	function circle(top_y, bottom_y, color, lineWidth, strokeStyle) {
 		ctx.beginPath();
@@ -35,6 +36,7 @@ var shapes = [
 		ctx.arc(BASE_X + WIDTH / 2, BASE_Y + (top_y + bottom_y) / 2, (bottom_y - top_y) / 2, 0, 2 * Math.PI, false);
 		ctx.fillStyle = color;
 		ctx.fill();
+		ctx.closePath();
 	},
 	function triangle(top_y, bottom_y, color, lineWidth, strokeStyle) {
 		ctx.beginPath();
@@ -51,6 +53,7 @@ var shapes = [
 		}
 		ctx.fillStyle = color;
 		ctx.fill();
+		ctx.closePath();
 	}
 ];
 var blends = ['source-atop', 'source-in', 'xor'];
@@ -74,11 +77,11 @@ for (BASE_X = 100; BASE_X < 500; BASE_X += 200) {
 			}
 			//color_index = Math.floor(Math.random() * colors.length);
 		    if (Math.random() > 0.3) { color_index = 1 - color_index;}
-			if (Math.random() > 0.7) {
+			if (Math.random() > 0.5) {
 				lineWidth = 20;
 				strokeStyle = colors[1 - color_index];
 			} else {
-				lineWidth = 5;
+				lineWidth = 0;
 				strokeStyle = colors[color_index];
 			}
 
