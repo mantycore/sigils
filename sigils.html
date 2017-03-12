@@ -1,0 +1,92 @@
+<style>canvas {background-color: white;}</style>
+<canvas id="MyCanvas" width="650" height="600"></canvas>
+<script>
+var canvas = document.getElementById("MyCanvas");
+var HEIGHT = 100;
+var WIDTH = 100;
+var BASE_X = 100;
+var BASE_Y = 100;
+
+
+if (canvas.getContext) {
+var ctx = canvas.getContext("2d");
+var shapes = [
+	function rectangle(top_y, bottom_y, color, lineWidth, strokeStyle) {
+		var width;
+		if (Math.random < 0.3) {
+			width = Math.random() * WIDTH;
+		} else {
+			width = bottom_y - top_y;
+		}
+		var left_x = (WIDTH - width) / 2;
+
+
+		ctx.beginPath();
+		ctx.lineWidth = lineWidth;
+		ctx.strokeStyle = strokeStyle;
+		ctx.rect(BASE_X + left_x, BASE_Y + top_y, width, bottom_y - top_y);
+		ctx.fillStyle = color;
+		ctx.fill()
+	},
+	function circle(top_y, bottom_y, color, lineWidth, strokeStyle) {
+		ctx.beginPath();
+		ctx.lineWidth = lineWidth;
+		ctx.strokeStyle = strokeStyle;
+		ctx.arc(BASE_X + WIDTH / 2, BASE_Y + (top_y + bottom_y) / 2, (bottom_y - top_y) / 2, 0, 2 * Math.PI, false);
+		ctx.fillStyle = color;
+		ctx.fill();
+	},
+	function triangle(top_y, bottom_y, color, lineWidth, strokeStyle) {
+		ctx.beginPath();
+		ctx.lineWidth = lineWidth;
+		ctx.strokeStyle = strokeStyle;
+		if (Math.random() > 0.5) {
+			ctx.moveTo(BASE_X + WIDTH / 2, BASE_Y + top_y);
+			ctx.lineTo(BASE_X + WIDTH / 2 + (bottom_y - top_y)/Math.sqrt(3), BASE_Y + bottom_y);
+			ctx.lineTo(BASE_X + WIDTH / 2 - (bottom_y - top_y)/Math.sqrt(3), BASE_Y + bottom_y);
+		} else {
+			ctx.moveTo(BASE_X + WIDTH / 2, BASE_Y + bottom_y);
+			ctx.lineTo(BASE_X + WIDTH / 2 + (bottom_y - top_y)/Math.sqrt(3), BASE_Y + top_y);
+			ctx.lineTo(BASE_X + WIDTH / 2 - (bottom_y - top_y)/Math.sqrt(3), BASE_Y + top_y);
+		}
+		ctx.fillStyle = color;
+		ctx.fill();
+	}
+];
+var blends = ['source-atop', 'source-in', 'xor'];
+var colors = ['black', 'white'];
+for (BASE_X = 100; BASE_X < 500; BASE_X += 200) {
+	for (BASE_Y = 100; BASE_Y < 500; BASE_Y += 200) {
+		var top_y = 0;
+		var bottom_y = 100;
+		var color_index = 0;
+		for (var i = 0 ; i < 10; i++) {
+			if (Math.random() < 0.3) {
+				top_y += (Math.random() * 25 + 5) * (Math.floor(Math.random() * 2) * 2 - 1);
+				if (top_y > bottom_y) { top_y = bottom_y - 10; }
+				if (top_y < 0) { top_y = 0; }
+			}
+
+			if (Math.random() < 0.3) {
+				bottom_y += (Math.random() * 25 + 5) * (Math.floor(Math.random() * 2) * 2 - 1);
+				if (bottom_y < top_y) { bottom_y = top_y + 10; }
+				if (bottom_y > 100) { bottom_y = 100; }
+			}
+			//color_index = Math.floor(Math.random() * colors.length);
+		    if (Math.random() > 0.3) { color_index = 1 - color_index;}
+			if (Math.random() > 0.7) {
+				lineWidth = 20;
+				strokeStyle = colors[1 - color_index];
+			} else {
+				lineWidth = 5;
+				strokeStyle = colors[color_index];
+			}
+
+		    ctx.globalCompositeOperation = blends[Math.floor(Math.random * blends.length)];
+			shapes[Math.floor(Math.random() * shapes.length)](top_y, bottom_y, colors[color_index], lineWidth, strokeStyle);
+			//shapes[2](top_y, bottom_y, 'black');
+		}
+	}
+}
+}
+</script>
